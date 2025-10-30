@@ -580,6 +580,17 @@ def build():
     '''
     #pipcl.show_sysconfig()
     
+    PIP_EXTRA_INDEX_URL = os.environ.get('PIP_EXTRA_INDEX_URL')
+    pipcl.log(f'{PIP_EXTRA_INDEX_URL=}')
+    if PIP_EXTRA_INDEX_URL:
+        if PIP_EXTRA_INDEX_URL.startswith(f'file://'):
+            PIP_EXTRA_INDEX_URL = PIP_EXTRA_INDEX_URL[7:]
+        pipcl.run(
+                f'find {PIP_EXTRA_INDEX_URL}',
+                check=0,
+                prefix=f'find {PIP_EXTRA_INDEX_URL}: ',
+                )
+
     if PYMUPDF_SETUP_DUMMY == '1':
         log(f'{PYMUPDF_SETUP_DUMMY=} Building dummy wheel with no files.')
         return list()
